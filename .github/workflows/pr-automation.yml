@@ -6,15 +6,18 @@ on:
       - opened
       - synchronize
       - reopened
+      - closed
 
 permissions:
   pull-requests: write
   contents: write
 
 jobs:
+
   approve:
     name: Auto approve PR
     if: |
+      github.event.action != 'closed' &&
       github.event.pull_request.mergeable == true
 
     runs-on: ubuntu-latest
@@ -32,3 +35,18 @@ jobs:
             --repo "${{ github.repository }}" \
             --merge \
             --auto
+
+
+  sync:
+    name: Sync deployment fork
+    if: |
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: PR was merged
+        run: |
+          echo "PR #${{ github.event.pull_request.number }} was merged."
+          echo "Sync deployment fork here."

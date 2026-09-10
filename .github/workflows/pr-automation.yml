@@ -46,13 +46,37 @@ jobs:
 
   sync:
     name: Sync deployment fork
+    needs: approve
     if: |
       github.event.action == 'closed' &&
       github.event.pull_request.merged == true
+    
 
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout test-deploy repository
+        uses: actions/checkout@v4
+        with:
+          repository: test-iphun/test-deploy
+          token: ${{ secrets.BOT_TOKEN }}
+          fetch-depth: 0
+      - name: Add upstream remote (test repository)
+        run: |
+          git remote add upstream https://github.com/test-iphun/test.git
+      - name: Fetch from upstream
+        run: |
+          git fetch upstream ${{ github.event.pull_request.head.ref }}
+      - name: Merge upstream branch into test-deploy
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git merge upstream/${{ github.event.pull_request.head.ref }} -m "Sync from test repository"
+      - name: Push changes to test-deploy
+        run: |
+          git push origin ${{ github.event.pull_request.head.ref }}
+
       - name: PR was merged
         run: |
           echo "PR #${{ github.event.pull_request.number }} was merged."

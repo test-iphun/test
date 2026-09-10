@@ -29,10 +29,13 @@ jobs:
           echo "Mergeable: ${{ github.event.pull_request.mergeable }}"
       - name: Approve PR
         uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.PR_APPROVER_TOKEN }}
+
 
       - name: Enable auto-merge
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PR_APPROVER_TOKEN }}
         run: |
           gh pr merge \
             "${{ github.event.pull_request.number }}" \

@@ -30,12 +30,12 @@ jobs:
       - name: Approve PR
         uses: hmarr/auto-approve-action@v4
         with:
-          github-token: ${{ secrets.PR_APPROVER_TOKEN }}
+          github-token: ${{ secrets.BOT_TOKEN }}
 
 
       - name: Enable auto-merge
         env:
-          GH_TOKEN: ${{ secrets.PR_APPROVER_TOKEN }}
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
           gh pr merge \
             "${{ github.event.pull_request.number }}" \

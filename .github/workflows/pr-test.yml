@@ -81,7 +81,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git fetch upstream "$TARGET_BRANCH"
-          git merge --ff-only "upstream/$TARGET_BRANCH"
+          git merge --no-ff "upstream/$TARGET_BRANCH"
           git push origin "$TARGET_BRANCH"
 
       - name: Report successful synchronization

@@ -16,9 +16,9 @@ jobs:
   approve:
     name: Auto approve PR and enable auto-merge
 
-    if: |
-      github.event.action != 'closed' &&
-      github.event.pull_request.draft == false
+#    if: |
+#      github.event.action != 'closed' &&
+#      github.event.pull_request.draft == false
 
     runs-on: ubuntu-latest
 

@@ -167,6 +167,15 @@ jobs:
           gh repo sync "$DEPLOY_REPO" \
             --source "$CENTRAL_REPO" \
             --branch test
+              - name: Trigger deploy-test workflow
+
+      - name: Trigger deploy-test workflow
+        env:
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          gh workflow run deploy-test.yml \
+            --repo "$DEPLOY_REPO" \
+            --ref test
 
       - name: Report success
         run: |

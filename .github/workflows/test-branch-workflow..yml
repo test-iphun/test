@@ -174,7 +174,7 @@ jobs:
         run: |
           gh workflow run deploy-test.yml \
             --repo "$DEPLOY_REPO" \
-            --ref test
+            --ref main
 
       - name: Report success
         run: |
